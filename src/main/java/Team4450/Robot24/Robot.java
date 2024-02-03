@@ -1,3 +1,6 @@
+// Copyright (c) ORF 4450.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
 package Team4450.Robot24;
 
@@ -5,7 +8,6 @@ import static Team4450.Robot24.Constants.*;
 
 import Team4450.Lib.*;
 import Team4450.Robot24.wpilib.TimedRobot;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -21,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * described in the TimedRobot documentation. If you change the name of this class or the containing
  * package after creating this project, you must also update the Main.java file in the project.
  */
-
 public class Robot extends TimedRobot {
   private RobotContainer robotContainer;
 
@@ -72,18 +73,17 @@ public class Robot extends TimedRobot {
 
       // Set Java to catch any uncaught exceptions and record them in our log file.
 
-      Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-        public void uncaughtException(Thread t, Throwable e) {
-          Util.consoleLog("Uncaught exception from thread " + t);
-          Util.logException(e);
-          robot.endCompetition();
-        }
-      });
+      Thread.setDefaultUncaughtExceptionHandler(
+          new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread t, Throwable e) {
+              Util.consoleLog("Uncaught exception from thread " + t);
+              Util.logException(e);
+              robot.endCompetition();
+            }
+          });
 
-      if (RobotBase.isSimulation())
-        Util.consoleLog("Simulated Robot");
-      if (RobotBase.isReal())
-        Util.consoleLog("Real Robot");
+      if (RobotBase.isSimulation()) Util.consoleLog("Simulated Robot");
+      if (RobotBase.isReal()) Util.consoleLog("Real Robot");
 
       // Create SendableVersion object so it can be sent to the dashboard and also
       // log some of it's information.
@@ -91,9 +91,12 @@ public class Robot extends TimedRobot {
       SendableVersion.INSTANCE.init(PROGRAM_NAME);
 
       // Note: under simulation, this information may not be not correct.
-      Util.consoleLog("%s compiled by %s at %s (branch=%s, commit=%s)",
-          SendableVersion.INSTANCE.getProgramVersion(), SendableVersion.INSTANCE.getUser(),
-          SendableVersion.INSTANCE.getTime(), SendableVersion.INSTANCE.getBranch(),
+      Util.consoleLog(
+          "%s compiled by %s at %s (branch=%s, commit=%s)",
+          SendableVersion.INSTANCE.getProgramVersion(),
+          SendableVersion.INSTANCE.getUser(),
+          SendableVersion.INSTANCE.getTime(),
+          SendableVersion.INSTANCE.getBranch(),
           SendableVersion.INSTANCE.getCommit());
 
       // Util.consoleLog("manifest path=%s", SendableVersion.INSTANCE.getPath());
@@ -103,8 +106,8 @@ public class Robot extends TimedRobot {
 
       // Log RobotLib and WPILib versions we are using. Note Robolib WPILib version can be different
       // than robot WPILib version. Should be the same for best results.
-      Util.consoleLog("Robot WPILib=%s  Java=%s", WPILibVersion.Version,
-          System.getProperty("java.version"));
+      Util.consoleLog(
+          "Robot WPILib=%s  Java=%s", WPILibVersion.Version, System.getProperty("java.version"));
       Util.consoleLog("RobotLib=%s", LibraryVersion.version);
 
       // Note: Any Sendables added to SmartDashboard or Shuffleboard are sent to the DS on every
@@ -140,9 +143,8 @@ public class Robot extends TimedRobot {
    * This function is called every driver station packet, no matter the mode. Use this for items
    * like diagnostics that you want run during disabled, autonomous, teleoperated and test.
    *
-   * <p>
-   * This runs after the mode specific periodic functions, but before LiveWindow and SmartDashboard
-   * integrated updating.
+   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+   * SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() {
@@ -160,8 +162,7 @@ public class Robot extends TimedRobot {
     // The try/catch will catch any exceptions thrown in the commands run by the
     // scheduler and record them in our log file then stops execution of this program.
 
-    if (tracing & isEnabled())
-      FunctionTracer.INSTANCE.enterFunction("Robot.robotPeriodic");
+    if (tracing & isEnabled()) FunctionTracer.INSTANCE.enterFunction("Robot.robotPeriodic");
 
     try {
       CommandScheduler.getInstance().run();
@@ -170,15 +171,12 @@ public class Robot extends TimedRobot {
       this.endCompetition();
     }
 
-    if (tracing & isEnabled())
-      FunctionTracer.INSTANCE.exitFunction("Robot.robotPeriodic");
+    if (tracing & isEnabled()) FunctionTracer.INSTANCE.exitFunction("Robot.robotPeriodic");
 
     // if (tracing & isEnabled()) Tracer.INSTANCE.printFunctions(Util.logPrintStream);
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   */
+  /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
     Util.consoleLog();
@@ -231,8 +229,7 @@ public class Robot extends TimedRobot {
     // schedule the autonomous command (example)
 
     try {
-      if (autonomousCommand != null)
-        autonomousCommand.schedule();
+      if (autonomousCommand != null) autonomousCommand.schedule();
     } catch (Exception e) {
       Util.logException(e);
       this.endCompetition();
@@ -249,9 +246,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {}
 
-  /**
-   * This function is called once at the start of teleop mode.
-   */
+  /** This function is called once at the start of teleop mode. */
   @Override
   public void teleopInit() {
     Util.consoleLog("-------------------------------------------------------------------------");
@@ -260,8 +255,13 @@ public class Robot extends TimedRobot {
 
     LCD.clearAll();
 
-    LCD.printLine(LCD_1, "Mode: Teleop  All=%s, Start=%d, FMS=%b, msg=%s", alliance.name(),
-        location, DriverStation.isFMSAttached(), gameMessage);
+    LCD.printLine(
+        LCD_1,
+        "Mode: Teleop  All=%s, Start=%d, FMS=%b, msg=%s",
+        alliance.name(),
+        location,
+        DriverStation.isFMSAttached(),
+        gameMessage);
 
     SmartDashboard.putBoolean("Disabled", false);
     SmartDashboard.putBoolean("Teleop Mode", true);
@@ -271,8 +271,7 @@ public class Robot extends TimedRobot {
     // Driving handled by DriveCommand which is default command for the DriveBase.
     // Other commands scheduled by joystick buttons.
 
-    if (tracing)
-      FunctionTracer.INSTANCE.reset();
+    if (tracing) FunctionTracer.INSTANCE.reset();
 
     Util.consoleLog(
         "end -------------------------------------------------------------------------");
@@ -283,13 +282,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if (tracing)
-      FunctionTracer.INSTANCE.printFunctions(Util.logPrintStream);
+    if (tracing) FunctionTracer.INSTANCE.printFunctions(Util.logPrintStream);
   }
 
-  /**
-   * This function is called once at the start of test mode.
-   */
+  /** This function is called once at the start of test mode. */
   @Override
   public void testInit() {
     Util.consoleLog();
@@ -310,9 +306,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().enable();
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
+  /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
 }

@@ -1,9 +1,19 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copyright (c) ORF 4450.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package Team4450.Robot24.subsystems;
 
+import Team4450.Lib.Util;
+import Team4450.Robot24.Constants.ModuleConstants;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,20 +24,6 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.RobotBase;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVPhysicsSim;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
-
-import Team4450.Lib.Util;
-
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.RelativeEncoder;
-
-import Team4450.Robot24.Constants.ModuleConstants;
 
 public class MAXSwerveModule implements Sendable {
   private final CANSparkMax drivingSparkMax;
@@ -52,8 +48,8 @@ public class MAXSwerveModule implements Sendable {
    * controller. This configuration is specific to the REV MAXSwerve Module built with NEOs, SPARKS
    * MAX, and a Through Bore Encoder.
    */
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset,
-      String moduleLocation) {
+  public MAXSwerveModule(
+      int drivingCANId, int turningCANId, double chassisAngularOffset, String moduleLocation) {
     this.moduleLocation = moduleLocation;
 
     Util.consoleLog("%s", moduleLocation);
@@ -97,10 +93,10 @@ public class MAXSwerveModule implements Sendable {
     // to 10 degrees will go through 0 rather than the other direction which is a
     // longer route.
     turningPIDController.setPositionPIDWrappingEnabled(true);
-    turningPIDController
-        .setPositionPIDWrappingMinInput(ModuleConstants.kTurningEncoderPositionPIDMinInput);
-    turningPIDController
-        .setPositionPIDWrappingMaxInput(ModuleConstants.kTurningEncoderPositionPIDMaxInput);
+    turningPIDController.setPositionPIDWrappingMinInput(
+        ModuleConstants.kTurningEncoderPositionPIDMinInput);
+    turningPIDController.setPositionPIDWrappingMaxInput(
+        ModuleConstants.kTurningEncoderPositionPIDMaxInput);
 
     // Set the PID gains for the driving motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -109,8 +105,8 @@ public class MAXSwerveModule implements Sendable {
     drivingPIDController.setD(ModuleConstants.kDrivingD);
     drivingPIDController.setFF(ModuleConstants.kDrivingFF);
 
-    drivingPIDController.setOutputRange(ModuleConstants.kDrivingMinOutput,
-        ModuleConstants.kDrivingMaxOutput);
+    drivingPIDController.setOutputRange(
+        ModuleConstants.kDrivingMinOutput, ModuleConstants.kDrivingMaxOutput);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -119,8 +115,8 @@ public class MAXSwerveModule implements Sendable {
     turningPIDController.setD(ModuleConstants.kTurningD);
     turningPIDController.setFF(ModuleConstants.kTurningFF);
 
-    turningPIDController.setOutputRange(ModuleConstants.kTurningMinOutput,
-        ModuleConstants.kTurningMaxOutput);
+    turningPIDController.setOutputRange(
+        ModuleConstants.kTurningMinOutput, ModuleConstants.kTurningMaxOutput);
 
     drivingSparkMax.setIdleMode(ModuleConstants.kDrivingMotorIdleMode);
     turningSparkMax.setIdleMode(ModuleConstants.kTurningMotorIdleMode);
@@ -162,11 +158,12 @@ public class MAXSwerveModule implements Sendable {
     // relative to the chassis.
 
     if (RobotBase.isReal())
-      return new SwerveModuleState(drivingEncoder.getVelocity(),
+      return new SwerveModuleState(
+          drivingEncoder.getVelocity(),
           new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
     else
-      return new SwerveModuleState(currentSimVelocity,
-          new Rotation2d(currentSimAngle - chassisAngularOffset));
+      return new SwerveModuleState(
+          currentSimVelocity, new Rotation2d(currentSimAngle - chassisAngularOffset));
   }
 
   /**
@@ -180,11 +177,14 @@ public class MAXSwerveModule implements Sendable {
     SwerveModulePosition position;
 
     if (RobotBase.isReal())
-      position = new SwerveModulePosition(drivingEncoder.getPosition(),
-          new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
+      position =
+          new SwerveModulePosition(
+              drivingEncoder.getPosition(),
+              new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
     else
-      position = new SwerveModulePosition(currentSimPosition,
-          new Rotation2d(currentSimAngle - chassisAngularOffset));
+      position =
+          new SwerveModulePosition(
+              currentSimPosition, new Rotation2d(currentSimAngle - chassisAngularOffset));
 
     // SmartDashboard.putNumber(moduleLocation + " curpos meters", position.distanceMeters);
     // SmartDashboard.putNumber(moduleLocation + " curpos angle", position.angle.getDegrees());
@@ -205,14 +205,15 @@ public class MAXSwerveModule implements Sendable {
         desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
-    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-        new Rotation2d(turningEncoder.getPosition()));
+    SwerveModuleState optimizedDesiredState =
+        SwerveModuleState.optimize(
+            correctedDesiredState, new Rotation2d(turningEncoder.getPosition()));
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
-    drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond,
-        CANSparkMax.ControlType.kVelocity);
-    turningPIDController.setReference(optimizedDesiredState.angle.getRadians(),
-        CANSparkMax.ControlType.kPosition);
+    drivingPIDController.setReference(
+        optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+    turningPIDController.setReference(
+        optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
     currentSimAngle = optimizedDesiredState.angle.getRadians();
 
@@ -232,7 +233,7 @@ public class MAXSwerveModule implements Sendable {
 
   /**
    * Sets module pose (not robot pose). Used for field2d display.
-   * 
+   *
    * @param pose The module pose to set.
    */
   public void setModulePose(Pose2d pose) {
@@ -241,7 +242,7 @@ public class MAXSwerveModule implements Sendable {
 
   /**
    * Returns the module pose (Not robot pose).
-   * 
+   *
    * @return Module pose.
    */
   public Pose2d getPose() {
@@ -252,16 +253,14 @@ public class MAXSwerveModule implements Sendable {
 
   /**
    * Returns the module steering angle.
-   * 
+   *
    * @return Steering angle
    */
   public Rotation2d getAngle2d() {
     Rotation2d rot;
 
-    if (RobotBase.isReal())
-      rot = new Rotation2d(turningEncoder.getPosition());
-    else
-      rot = new Rotation2d(currentSimAngle - chassisAngularOffset);
+    if (RobotBase.isReal()) rot = new Rotation2d(turningEncoder.getPosition());
+    else rot = new Rotation2d(currentSimAngle - chassisAngularOffset);
 
     // SmartDashboard.putNumber(moduleLocation + " hdng", rot.getDegrees());
 
@@ -277,10 +276,8 @@ public class MAXSwerveModule implements Sendable {
   }
 
   public void setBrakeMode(boolean on) {
-    if (on)
-      drivingSparkMax.setIdleMode(IdleMode.kBrake);
-    else
-      drivingSparkMax.setIdleMode(IdleMode.kCoast);
+    if (on) drivingSparkMax.setIdleMode(IdleMode.kBrake);
+    else drivingSparkMax.setIdleMode(IdleMode.kCoast);
   }
 
   @Override

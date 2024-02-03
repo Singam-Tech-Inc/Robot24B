@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copyright (c) ORF 4450.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -9,7 +9,6 @@ import edu.wpi.first.hal.NotifierJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Tracer;
-
 import java.io.Closeable;
 import java.util.PriorityQueue;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,12 +17,10 @@ import java.util.function.Consumer;
 /**
  * A class that's a wrapper around a watchdog timer.
  *
- * <p>
- * When the timer expires, a message is printed to the console and an optional user-provided
+ * <p>When the timer expires, a message is printed to the console and an optional user-provided
  * callback is invoked.
  *
- * <p>
- * The watchdog is initialized disabled, so the user needs to call enable() before use.
+ * <p>The watchdog is initialized disabled, so the user needs to call enable() before use.
  */
 public class Watchdog implements Closeable, Comparable<Watchdog> {
   // Used for timeout print rate-limiting
@@ -171,18 +168,17 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
    * Prints list of epochs added so far and their times.
    *
    * @see Tracer#printEpochs()
-   * 
    * @param output The stream that the output is sent to
    */
   public void printEpochs(Consumer<String> output) {
-    m_tracer.printEpochs(output);;
+    m_tracer.printEpochs(output);
+    ;
   }
 
   /**
    * Resets the watchdog timer.
    *
-   * <p>
-   * This also enables the timer if it was previously disabled.
+   * <p>This also enables the timer if it was previously disabled.
    */
   public void reset() {
     enable();
@@ -220,8 +216,7 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
   /**
    * Enable or disable suppression of the generic timeout message.
    *
-   * <p>
-   * This may be desirable if the user-provided callback already prints a more specific message.
+   * <p>This may be desirable if the user-provided callback already prints a more specific message.
    *
    * @param suppress Whether to suppress generic timeout message.
    */
@@ -233,8 +228,8 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
     if (m_watchdogs.size() == 0) {
       NotifierJNI.cancelNotifierAlarm(m_notifier);
     } else {
-      NotifierJNI.updateNotifierAlarm(m_notifier,
-          (long) (m_watchdogs.peek().m_expirationTimeSeconds * 1e6));
+      NotifierJNI.updateNotifierAlarm(
+          m_notifier, (long) (m_watchdogs.peek().m_expirationTimeSeconds * 1e6));
     }
   }
 

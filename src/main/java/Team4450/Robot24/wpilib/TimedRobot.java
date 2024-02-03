@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copyright (c) ORF 4450.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -8,19 +8,17 @@ package Team4450.Robot24.wpilib;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.hal.NotifierJNI;
+import edu.wpi.first.wpilibj.Timer;
 import java.util.PriorityQueue;
 
 /**
  * TimedRobot implements the IterativeRobotBase robot program framework.
  *
- * <p>
- * The TimedRobot class is intended to be subclassed by a user creating a robot program.
+ * <p>The TimedRobot class is intended to be subclassed by a user creating a robot program.
  *
- * <p>
- * periodic() functions from the base class are called on an interval by a Notifier instance.
+ * <p>periodic() functions from the base class are called on an interval by a Notifier instance.
  */
 public class TimedRobot extends IterativeRobotBase {
   @SuppressWarnings("MemberName")
@@ -40,9 +38,12 @@ public class TimedRobot extends IterativeRobotBase {
     Callback(Runnable func, double startTimeSeconds, double periodSeconds, double offsetSeconds) {
       this.func = func;
       this.period = periodSeconds;
-      this.expirationTime = startTimeSeconds + offsetSeconds
-          + Math.floor((Timer.getFPGATimestamp() - startTimeSeconds) / this.period) * this.period
-          + this.period;
+      this.expirationTime =
+          startTimeSeconds
+              + offsetSeconds
+              + Math.floor((Timer.getFPGATimestamp() - startTimeSeconds) / this.period)
+                  * this.period
+              + this.period;
     }
 
     @Override
@@ -154,9 +155,8 @@ public class TimedRobot extends IterativeRobotBase {
   /**
    * Add a callback to run at a specific period.
    *
-   * <p>
-   * This is scheduled on TimedRobot's Notifier, so TimedRobot and the callback run synchronously.
-   * Interactions between them are thread-safe.
+   * <p>This is scheduled on TimedRobot's Notifier, so TimedRobot and the callback run
+   * synchronously. Interactions between them are thread-safe.
    *
    * @param callback The callback to run.
    * @param periodSeconds The period at which to run the callback in seconds.
@@ -168,14 +168,13 @@ public class TimedRobot extends IterativeRobotBase {
   /**
    * Add a callback to run at a specific period with a starting time offset.
    *
-   * <p>
-   * This is scheduled on TimedRobot's Notifier, so TimedRobot and the callback run synchronously.
-   * Interactions between them are thread-safe.
+   * <p>This is scheduled on TimedRobot's Notifier, so TimedRobot and the callback run
+   * synchronously. Interactions between them are thread-safe.
    *
    * @param callback The callback to run.
    * @param periodSeconds The period at which to run the callback in seconds.
    * @param offsetSeconds The offset from the common starting time in seconds. This is useful for
-   *        scheduling a callback in a different timeslot relative to TimedRobot.
+   *     scheduling a callback in a different timeslot relative to TimedRobot.
    */
   public void addPeriodic(Runnable callback, double periodSeconds, double offsetSeconds) {
     m_callbacks.add(new Callback(callback, m_startTime, periodSeconds, offsetSeconds));

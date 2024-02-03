@@ -34,7 +34,7 @@ Port	Device			Description
 PCM 0 Ports
 Port	Device blk-pos	Description
 -----------------------------------------------------------------------------------
-       
+
 
 PCM 1 Ports
 Port	Device blk-pos	Description
@@ -68,7 +68,7 @@ Driver GamePad - Buttons
 Button Name				Function
 -----------------------------------------------------------------------------------
 LEFT_TRIGGER            Slow mode (Hold down).
-RIGHT_TRIGGER           
+RIGHT_TRIGGER
 BACK                    Toggle field/robot orientation driving.
 START                   Reset Navx to reorient field direction.
 LEFT_BUMPER             Park Mode (hold down).
@@ -79,7 +79,7 @@ POV_?                   Auto rotate to the POV direction.
 ?                       Switch Shuffleboard tab.
 ?                       Switch Camera.
 B                       Toggle drive wheel brake mode.
-X                       
+X
 A                       Toggle April Tag Tracking mode.
 
 
@@ -121,4 +121,3 @@ Tracking                boolean         True when tracking mode is enabled.
 
 
 Drive Base gearbox ratios: MaxSwerve 14 tooth pinion for approx 15.7 f/s or 4.8 m/s.
-

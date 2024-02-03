@@ -1,3 +1,7 @@
+// Copyright (c) ORF 4450.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package Team4450.Robot24.commands.Utility;
 
 /*----------------------------------------------------------------------------*/
@@ -18,10 +22,9 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * {@link Command#withInterrupt(BooleanSupplier)} to give it one. Modified by Team 4450 so that
  * Period == 0 runs runnable one time then command ends.
  *
- * <p>
- * WARNING: Do not use this class unless you are confident in your ability to make the executed code
- * thread-safe. If you do not know what "thread-safe" means, that is a good sign that you should not
- * use this class.
+ * <p>WARNING: Do not use this class unless you are confident in your ability to make the executed
+ * code thread-safe. If you do not know what "thread-safe" means, that is a good sign that you
+ * should not use this class.
  */
 public class NotifierCommand extends Command {
   protected final Notifier m_notifier;
@@ -34,7 +37,7 @@ public class NotifierCommand extends Command {
    *
    * @param toRun The runnable for the notifier to run.
    * @param period The period at which the notifier should run, in seconds. Zero runs the runnable
-   *        one time then the command ends.
+   *     one time then the command ends.
    * @param requirements The subsystems required by this command.
    */
   public NotifierCommand(Runnable toRun, double period, Subsystem... requirements) {
@@ -50,7 +53,7 @@ public class NotifierCommand extends Command {
    *
    * @param toRun The runnable for the notifier to run.
    * @param period The period at which the notifier should run, in seconds. Zero runs the runnable
-   *        one time then the command ends.
+   *     one time then the command ends.
    * @param name Name to identify the thread.
    * @param requirements The subsystems required by this command.
    */
@@ -67,7 +70,7 @@ public class NotifierCommand extends Command {
    *
    * @param toRun The runnable for the notifier to run.
    * @param period The period at which the notifier should run, in seconds. Zero runs the runnable
-   *        one time then the command ends.
+   *     one time then the command ends.
    */
   public NotifierCommand(Runnable toRun, double period) {
     Util.consoleLog();
@@ -81,7 +84,7 @@ public class NotifierCommand extends Command {
    *
    * @param toRun The runnable for the notifier to run.
    * @param period The period at which the notifier should run, in seconds. Zero runs the runnable
-   *        one time then the command ends.
+   *     one time then the command ends.
    * @param name Name for notifier thread.
    */
   public NotifierCommand(Runnable toRun, double period, String name) {
@@ -96,10 +99,8 @@ public class NotifierCommand extends Command {
   public void initialize() {
     Util.consoleLog("%s period=%.3f", m_name, m_period);
 
-    if (m_period == 0)
-      m_notifier.startSingle(0);
-    else
-      m_notifier.startPeriodic(m_period);
+    if (m_period == 0) m_notifier.startSingle(0);
+    else m_notifier.startPeriodic(m_period);
   }
 
   @Override
@@ -115,15 +116,13 @@ public class NotifierCommand extends Command {
   public boolean isFinished() {
     // Util.consoleLog(m_name);
 
-    if (m_period == 0)
-      return true;
-    else
-      return false;
+    if (m_period == 0) return true;
+    else return false;
   }
 
   /**
    * Returns state of run when disabled setting.
-   * 
+   *
    * @return True if command runs when disabled.
    */
   @Override
@@ -133,7 +132,7 @@ public class NotifierCommand extends Command {
 
   /**
    * Sets command to run when robot disabled. Defaults to false.
-   * 
+   *
    * @param run True to run when disabled, false if not.
    */
   public void setRunWhenDisabled(boolean run) {
