@@ -16,10 +16,10 @@ import Team4450.Robot24.subsystems.PhotonVision;
 
 
 public class FaceAprilTag extends Command {
-    DriveBase       robotDrive;
-    PhotonVision    photonVision;
-    PIDController   pidController = new PIDController(0.01, 0, 0);
-    AprilTagNames   tagNames = new AprilTagNames(Alliance.Red);
+    DriveBase robotDrive;
+    PhotonVision photonVision;
+    PIDController pidController = new PIDController(0.01, 0, 0);
+    AprilTagNames tagNames = new AprilTagNames(Alliance.Red);
 
     public FaceAprilTag(PhotonVision cameraSubsystem, DriveBase robotDrive) {
         Util.consoleLog();
@@ -38,10 +38,10 @@ public class FaceAprilTag extends Command {
         Util.consoleLog();
 
         pidController.reset();
-        
+
         robotDrive.enableTracking();
     }
-    
+
     @Override
     public void execute() {
         // get an arralist of all the tags IDs that the camera currently sees
@@ -49,14 +49,17 @@ public class FaceAprilTag extends Command {
         PhotonTrackedTarget target;
 
         // first prioritize the center speaker tag if it is in view
-        if (tags.contains(tagNames.SPEAKER_MAIN)) target = photonVision.getTarget(tagNames.SPEAKER_MAIN);
+        if (tags.contains(tagNames.SPEAKER_MAIN))
+            target = photonVision.getTarget(tagNames.SPEAKER_MAIN);
 
         // next try finding the amp tag
-        else if (tags.contains(tagNames.AMP))target = photonVision.getTarget(tagNames.AMP);
+        else if (tags.contains(tagNames.AMP))
+            target = photonVision.getTarget(tagNames.AMP);
 
         // finally, default to the first tag that isn't the center speaker or amp
         // could be offset speaker, trap source, etc, other alliance, etc.
-        else if (tags.size() > 0) target = photonVision.getTarget(tags.get(0));
+        else if (tags.size() > 0)
+            target = photonVision.getTarget(tags.get(0));
 
         // otherwise tell drivebase to set NaN as rotation to let driver override commanded
         // rotation to reorient the robot manually
@@ -80,7 +83,7 @@ public class FaceAprilTag extends Command {
     @Override
     public void end(boolean interrupted) {
         Util.consoleLog("interrupted=%b", interrupted);
-        
+
         robotDrive.disableTracking();
 
         SmartDashboard.putBoolean("Has AprilTag", false);

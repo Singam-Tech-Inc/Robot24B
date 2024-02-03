@@ -39,27 +39,27 @@ public class MAXSwerveModule implements Sendable {
   private final SparkPIDController drivingPIDController;
   private final SparkPIDController turningPIDController;
 
-  private double            chassisAngularOffset = 0;
-  //private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
+  private double chassisAngularOffset = 0;
+  // private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-  private double            currentSimVelocity, currentSimPosition, currentSimAngle;
-  public String             moduleLocation;
-  private Pose2d            pose;
-  private Translation2d     translation2d;
+  private double currentSimVelocity, currentSimPosition, currentSimAngle;
+  public String moduleLocation;
+  private Pose2d pose;
+  private Translation2d translation2d;
 
   /**
-   * Constructs a MAXSwerveModule and configures the driving and turning motor,
-   * encoder, and PID controller. This configuration is specific to the REV
-   * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
-   * Encoder.
+   * Constructs a MAXSwerveModule and configures the driving and turning motor, encoder, and PID
+   * controller. This configuration is specific to the REV MAXSwerve Module built with NEOs, SPARKS
+   * MAX, and a Through Bore Encoder.
    */
-  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, String moduleLocation) {
+  public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset,
+      String moduleLocation) {
     this.moduleLocation = moduleLocation;
 
     Util.consoleLog("%s", moduleLocation);
-               
+
     SendableRegistry.addLW(this, "DriveSubsystem/Swerve Modules", moduleLocation);
-    
+
     drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
 
@@ -97,8 +97,10 @@ public class MAXSwerveModule implements Sendable {
     // to 10 degrees will go through 0 rather than the other direction which is a
     // longer route.
     turningPIDController.setPositionPIDWrappingEnabled(true);
-    turningPIDController.setPositionPIDWrappingMinInput(ModuleConstants.kTurningEncoderPositionPIDMinInput);
-    turningPIDController.setPositionPIDWrappingMaxInput(ModuleConstants.kTurningEncoderPositionPIDMaxInput);
+    turningPIDController
+        .setPositionPIDWrappingMinInput(ModuleConstants.kTurningEncoderPositionPIDMinInput);
+    turningPIDController
+        .setPositionPIDWrappingMaxInput(ModuleConstants.kTurningEncoderPositionPIDMaxInput);
 
     // Set the PID gains for the driving motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -108,7 +110,7 @@ public class MAXSwerveModule implements Sendable {
     drivingPIDController.setFF(ModuleConstants.kDrivingFF);
 
     drivingPIDController.setOutputRange(ModuleConstants.kDrivingMinOutput,
-                                        ModuleConstants.kDrivingMaxOutput);
+        ModuleConstants.kDrivingMaxOutput);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -116,9 +118,9 @@ public class MAXSwerveModule implements Sendable {
     turningPIDController.setI(ModuleConstants.kTurningI);
     turningPIDController.setD(ModuleConstants.kTurningD);
     turningPIDController.setFF(ModuleConstants.kTurningFF);
-    
+
     turningPIDController.setOutputRange(ModuleConstants.kTurningMinOutput,
-                                        ModuleConstants.kTurningMaxOutput);
+        ModuleConstants.kTurningMaxOutput);
 
     drivingSparkMax.setIdleMode(ModuleConstants.kDrivingMotorIdleMode);
     turningSparkMax.setIdleMode(ModuleConstants.kTurningMotorIdleMode);
@@ -131,19 +133,18 @@ public class MAXSwerveModule implements Sendable {
     turningSparkMax.burnFlash();
 
     this.chassisAngularOffset = chassisAngularOffset;
-    
+
     // if (RobotBase.isSimulation())
-    //   desiredState.angle = new Rotation2d();
+    // desiredState.angle = new Rotation2d();
     // else
-    //   desiredState.angle = new Rotation2d(turningEncoder.getPosition());
-    
+    // desiredState.angle = new Rotation2d(turningEncoder.getPosition());
+
     drivingEncoder.setPosition(0);
-    
-    if (RobotBase.isSimulation()) 
-    {
+
+    if (RobotBase.isSimulation()) {
       // Note that the REV simulation does not work correctly. We have hacked
       // a solution where we drive the sim through our code, not by reading the
-      // REV simulated encoder position and velocity, which are incorrect. However, 
+      // REV simulated encoder position and velocity, which are incorrect. However,
       // registering the motor controller with the REV sim is still needed.
 
       REVPhysicsSim.getInstance().addSparkMax(turningSparkMax, DCMotor.getNeo550(1));
@@ -166,7 +167,7 @@ public class MAXSwerveModule implements Sendable {
     else
       return new SwerveModuleState(currentSimVelocity,
           new Rotation2d(currentSimAngle - chassisAngularOffset));
-  } 
+  }
 
   /**
    * Returns the current position of the module.
@@ -176,19 +177,17 @@ public class MAXSwerveModule implements Sendable {
   public SwerveModulePosition getPosition() {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
-    SwerveModulePosition  position;
+    SwerveModulePosition position;
 
     if (RobotBase.isReal())
-      position = new SwerveModulePosition(
-          drivingEncoder.getPosition(),
+      position = new SwerveModulePosition(drivingEncoder.getPosition(),
           new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
     else
-      position = new SwerveModulePosition(
-          currentSimPosition,
+      position = new SwerveModulePosition(currentSimPosition,
           new Rotation2d(currentSimAngle - chassisAngularOffset));
-    
-    //SmartDashboard.putNumber(moduleLocation + " curpos meters", position.distanceMeters);
-    //SmartDashboard.putNumber(moduleLocation + " curpos angle", position.angle.getDegrees());
+
+    // SmartDashboard.putNumber(moduleLocation + " curpos meters", position.distanceMeters);
+    // SmartDashboard.putNumber(moduleLocation + " curpos angle", position.angle.getDegrees());
 
     return position;
   }
@@ -202,23 +201,26 @@ public class MAXSwerveModule implements Sendable {
     // Apply chassis angular offset to the desired state.
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
     correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-    correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
+    correctedDesiredState.angle =
+        desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
         new Rotation2d(turningEncoder.getPosition()));
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
-    drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-    turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+    drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond,
+        CANSparkMax.ControlType.kVelocity);
+    turningPIDController.setReference(optimizedDesiredState.angle.getRadians(),
+        CANSparkMax.ControlType.kPosition);
 
     currentSimAngle = optimizedDesiredState.angle.getRadians();
 
     currentSimVelocity = optimizedDesiredState.speedMetersPerSecond;
-    
+
     double distancePer20Ms = currentSimVelocity / 50.0;
 
-    //SmartDashboard.putNumber(moduleLocation + " sim vel", currentSimVelocity);
+    // SmartDashboard.putNumber(moduleLocation + " sim vel", currentSimVelocity);
 
     currentSimPosition += distancePer20Ms;
   }
@@ -230,54 +232,51 @@ public class MAXSwerveModule implements Sendable {
 
   /**
    * Sets module pose (not robot pose). Used for field2d display.
+   * 
    * @param pose The module pose to set.
    */
-  public void setModulePose(Pose2d pose) 
-  {
-      this.pose = pose;
+  public void setModulePose(Pose2d pose) {
+    this.pose = pose;
   }
 
   /**
    * Returns the module pose (Not robot pose).
+   * 
    * @return Module pose.
    */
-  public Pose2d getPose()
-  {
-      //SmartDashboard.putString(moduleLocation + " pose", pose.toString());
+  public Pose2d getPose() {
+    // SmartDashboard.putString(moduleLocation + " pose", pose.toString());
 
-      return pose;
+    return pose;
   }
-  
+
   /**
    * Returns the module steering angle.
+   * 
    * @return Steering angle
    */
-  public Rotation2d getAngle2d() 
-  {
-      Rotation2d  rot;
+  public Rotation2d getAngle2d() {
+    Rotation2d rot;
 
-      if (RobotBase.isReal())
-          rot = new Rotation2d(turningEncoder.getPosition());
-      else
-          rot = new Rotation2d(currentSimAngle - chassisAngularOffset);
+    if (RobotBase.isReal())
+      rot = new Rotation2d(turningEncoder.getPosition());
+    else
+      rot = new Rotation2d(currentSimAngle - chassisAngularOffset);
 
-      //SmartDashboard.putNumber(moduleLocation + " hdng", rot.getDegrees());
+    // SmartDashboard.putNumber(moduleLocation + " hdng", rot.getDegrees());
 
-      return rot;
+    return rot;
   }
 
-  public void setTranslation2d(Translation2d translation) 
-  {
-      translation2d = translation;            
+  public void setTranslation2d(Translation2d translation) {
+    translation2d = translation;
   }
 
-  public Translation2d getTranslation2d() 
-  {
-      return translation2d;
+  public Translation2d getTranslation2d() {
+    return translation2d;
   }
 
-  public void setBrakeMode(boolean on)
-  {
+  public void setBrakeMode(boolean on) {
     if (on)
       drivingSparkMax.setIdleMode(IdleMode.kBrake);
     else
@@ -285,12 +284,11 @@ public class MAXSwerveModule implements Sendable {
   }
 
   @Override
-	public void initSendable( SendableBuilder builder )
-	{
+  public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType(getClass().getSimpleName());
 
     builder.addDoubleProperty("Cur pos dist", () -> getPosition().distanceMeters, null);
     builder.addDoubleProperty("Cur pos angle", () -> getPosition().angle.getDegrees(), null);
     builder.addStringProperty("Pose", () -> getPose().toString(), null);
-	}   
+  }
 }

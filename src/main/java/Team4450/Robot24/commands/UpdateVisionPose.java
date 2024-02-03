@@ -13,16 +13,16 @@ import Team4450.Robot24.subsystems.DriveBase;
 import Team4450.Robot24.subsystems.PhotonVision;
 
 /**
- * TODO
- * Need some doc on what this class does.
+ * TODO Need some doc on what this class does.
  */
 public class UpdateVisionPose extends Command {
-    PhotonVision    cameraSubsystem;
-    DriveBase       robotDrive;
+    PhotonVision cameraSubsystem;
+    DriveBase robotDrive;
 
     /**
-     * updates the odometry pose estimator to include sighted AprilTag positions from
-     * PhotonVision pose estimator
+     * updates the odometry pose estimator to include sighted AprilTag positions from PhotonVision
+     * pose estimator
+     * 
      * @param cameraSubsystem the PhotonVision subsystem in use
      * @param robotDrive the drive base
      */
@@ -49,12 +49,10 @@ public class UpdateVisionPose extends Command {
 
         if (estimatedPoseOptional.isPresent()) {
             EstimatedRobotPose estimatedPoseContainer = estimatedPoseOptional.get();
-             // pose2d to pose3d (ignore the Z axis which is height off ground)
-            Pose2d pose2d = new Pose2d(
-                estimatedPoseContainer.estimatedPose.getX(),
-                estimatedPoseContainer.estimatedPose.getY(),
-                new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getAngle())
-            );
+            // pose2d to pose3d (ignore the Z axis which is height off ground)
+            Pose2d pose2d = new Pose2d(estimatedPoseContainer.estimatedPose.getX(),
+                    estimatedPoseContainer.estimatedPose.getY(),
+                    new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getAngle()));
 
             robotDrive.updateOdometryVision(pose2d, estimatedPoseContainer.timestampSeconds);
         }

@@ -10,19 +10,21 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import Team4450.Robot24.subsystems.DriveBase;
 
 public class PointToYaw extends Command {
-    private DoubleSupplier  yawSupplier;
-    private boolean         wait;
-    private DriveBase       robotDrive;
-    private PIDController   pidController = new PIDController(0.5, 0, 0);
-    private Set<Subsystem>  requirements;
+    private DoubleSupplier yawSupplier;
+    private boolean wait;
+    private DriveBase robotDrive;
+    private PIDController pidController = new PIDController(0.5, 0, 0);
+    private Set<Subsystem> requirements;
 
     private static final double NO_VALUE = Double.NaN;
 
     /**
      * Point to a yaw value
+     * 
      * @param yawSupplier a supplier of desired yaw values (IN RADIANS!)
      * @param robotDrive the drive subsystem
-     * @param wait whether or not to wait until it is completed to drive again (whether this command "requires" drivebase)
+     * @param wait whether or not to wait until it is completed to drive again (whether this command
+     *        "requires" drivebase)
      */
     public PointToYaw(DoubleSupplier yawSupplier, DriveBase robotDrive, boolean wait) {
         Util.consoleLog();
@@ -33,7 +35,8 @@ public class PointToYaw extends Command {
         this.requirements = Set.of();
 
         // if wait is set to true, then "require" the drive subsystem to ovverride other commands
-        if (wait) this.requirements = Set.of(robotDrive);
+        if (wait)
+            this.requirements = Set.of(robotDrive);
     }
 
     @Override
@@ -53,7 +56,8 @@ public class PointToYaw extends Command {
             robotDrive.setTrackingRotation(desiredYaw);
 
             // make robot stationary if waiting
-            if (wait) robotDrive.drive(0,0,0,false);
+            if (wait)
+                robotDrive.drive(0, 0, 0, false);
             return;
         }
 
@@ -62,9 +66,9 @@ public class PointToYaw extends Command {
 
         if (wait) {
             // if this command is only one running on drivebase (wait) then command it to run
-            robotDrive.drive(0,0,rotation,false);
+            robotDrive.drive(0, 0, rotation, false);
         }
-        
+
         // sets the override in drivebase so it will use rotation rather than joystick
         robotDrive.setTrackingRotation(rotation);
     }
@@ -87,8 +91,9 @@ public class PointToYaw extends Command {
         Util.consoleLog();
 
         pidController.reset();
-        pidController.setTolerance(.01);      // in radians.
-        pidController.enableContinuousInput(-Math.PI, Math.PI); // rotation is continuous: full circle repeats
+        pidController.setTolerance(.01); // in radians.
+        pidController.enableContinuousInput(-Math.PI, Math.PI); // rotation is continuous: full
+                                                                // circle repeats
         robotDrive.enableTracking();
     }
 
@@ -107,11 +112,11 @@ public class PointToYaw extends Command {
     }
 
     /**
-    * Generate a yaw from a POV value.
-    *
-    * @param pov The POV value.
-    * @return yaw
-    */
+     * Generate a yaw from a POV value.
+     *
+     * @param pov The POV value.
+     * @return yaw
+     */
     public static double yawFromPOV(double pov) {
         if (pov < 0)
             // no POV buttons are pressed currently
@@ -129,14 +134,14 @@ public class PointToYaw extends Command {
             return radians;
         }
     }
-    
+
     /**
-    * generate a yaw from axis values
-    *
-    * @param xAxis
-    * @param yAxis
-    * @return yaw
-    */
+     * generate a yaw from axis values
+     *
+     * @param xAxis
+     * @param yAxis
+     * @return yaw
+     */
     public static double yawFromAxes(double xAxis, double yAxis) {
         double theta = Math.atan2(xAxis, yAxis);
         double magnitude = Math.sqrt(Math.pow(xAxis, 2) + Math.pow(yAxis, 2));

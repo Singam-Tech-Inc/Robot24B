@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-//package edu.wpi.first.wpilibj;
+// package edu.wpi.first.wpilibj;
 package Team4450.Robot24.wpilib;
 
 import Team4450.Lib.Util;
@@ -20,56 +20,58 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * IterativeRobotBase implements a specific type of robot program framework, extending the RobotBase
  * class.
  *
- * <p>The IterativeRobotBase class does not implement startCompetition(), so it should not be used
- * by teams directly.
+ * <p>
+ * The IterativeRobotBase class does not implement startCompetition(), so it should not be used by
+ * teams directly.
  *
- * <p>This class provides the following functions which are called by the main loop,
+ * <p>
+ * This class provides the following functions which are called by the main loop,
  * startCompetition(), at the appropriate times:
  *
- * <p>robotInit() -- provide for initialization at robot power-on
+ * <p>
+ * robotInit() -- provide for initialization at robot power-on
  *
- * <p>init() functions -- each of the following functions is called once when the appropriate mode
- * is entered:
+ * <p>
+ * init() functions -- each of the following functions is called once when the appropriate mode is
+ * entered:
  *
  * <ul>
- *   <li>disabledInit() -- called each and every time disabled is entered from another mode
- *   <li>autonomousInit() -- called each and every time autonomous is entered from another mode
- *   <li>teleopInit() -- called each and every time teleop is entered from another mode
- *   <li>testInit() -- called each and every time test is entered from another mode
+ * <li>disabledInit() -- called each and every time disabled is entered from another mode
+ * <li>autonomousInit() -- called each and every time autonomous is entered from another mode
+ * <li>teleopInit() -- called each and every time teleop is entered from another mode
+ * <li>testInit() -- called each and every time test is entered from another mode
  * </ul>
  *
- * <p>periodic() functions -- each of these functions is called on an interval:
+ * <p>
+ * periodic() functions -- each of these functions is called on an interval:
  *
  * <ul>
- *   <li>robotPeriodic()
- *   <li>disabledPeriodic()
- *   <li>autonomousPeriodic()
- *   <li>teleopPeriodic()
- *   <li>testPeriodic()
+ * <li>robotPeriodic()
+ * <li>disabledPeriodic()
+ * <li>autonomousPeriodic()
+ * <li>teleopPeriodic()
+ * <li>testPeriodic()
  * </ul>
  *
- * <p>exit() functions -- each of the following functions is called once when the appropriate mode
- * is exited:
+ * <p>
+ * exit() functions -- each of the following functions is called once when the appropriate mode is
+ * exited:
  *
  * <ul>
- *   <li>disabledExit() -- called each and every time disabled is exited
- *   <li>autonomousExit() -- called each and every time autonomous is exited
- *   <li>teleopExit() -- called each and every time teleop is exited
- *   <li>testExit() -- called each and every time test is exited
+ * <li>disabledExit() -- called each and every time disabled is exited
+ * <li>autonomousExit() -- called each and every time autonomous is exited
+ * <li>teleopExit() -- called each and every time teleop is exited
+ * <li>testExit() -- called each and every time test is exited
  * </ul>
  */
 public abstract class IterativeRobotBase extends RobotBase {
   private enum Mode {
-    kNone,
-    kDisabled,
-    kAutonomous,
-    kTeleop,
-    kTest
+    kNone, kDisabled, kAutonomous, kTeleop, kTest
   }
 
   private final DSControlWord m_word = new DSControlWord();
   private Mode m_lastMode = Mode.kNone;
-  private double m_period;  // 4450
+  private double m_period; // 4450
   private final Watchdog m_watchdog;
   private boolean m_ntFlushEnabled = true;
 
@@ -92,10 +94,12 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Robot-wide initialization code should go here.
    *
-   * <p>Users should override this method for default Robot-wide initialization which will be called
+   * <p>
+   * Users should override this method for default Robot-wide initialization which will be called
    * when the robot is first powered on. It will be called exactly one time.
    *
-   * <p>Warning: the Driver Station "Robot Code" light and FMS "Robot Ready" indicators will be off
+   * <p>
+   * Warning: the Driver Station "Robot Code" light and FMS "Robot Ready" indicators will be off
    * until RobotInit() exits. Code in RobotInit() that waits for enable will cause the robot to
    * never indicate that the code is ready, causing the robot to be bypassed in a match.
    */
@@ -104,7 +108,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Robot-wide simulation initialization code should go here.
    *
-   * <p>Users should override this method for default Robot-wide simulation related initialization
+   * <p>
+   * Users should override this method for default Robot-wide simulation related initialization
    * which will be called when the robot is first started. It will be called exactly one time after
    * RobotInit is called only when the robot is in simulation.
    */
@@ -113,7 +118,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for disabled mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>
+   * Users should override this method for initialization code which will be called each time the
    * robot enters disabled mode.
    */
   public void disabledInit() {}
@@ -121,7 +127,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for autonomous mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>
+   * Users should override this method for initialization code which will be called each time the
    * robot enters autonomous mode.
    */
   public void autonomousInit() {}
@@ -129,7 +136,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for teleop mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>
+   * Users should override this method for initialization code which will be called each time the
    * robot enters teleop mode.
    */
   public void teleopInit() {}
@@ -137,7 +145,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for test mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>
+   * Users should override this method for initialization code which will be called each time the
    * robot enters test mode.
    */
   public void testInit() {}
@@ -159,7 +168,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Periodic simulation code should go here.
    *
-   * <p>This function is called in a simulated robot after user code executes.
+   * <p>
+   * This function is called in a simulated robot after user code executes.
    */
   public void simulationPeriodic() {
     if (m_spFirstRun) {
@@ -211,7 +221,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Exit code for disabled mode should go here.
    *
-   * <p>Users should override this method for code which will be called each time the robot exits
+   * <p>
+   * Users should override this method for code which will be called each time the robot exits
    * disabled mode.
    */
   public void disabledExit() {}
@@ -219,7 +230,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Exit code for autonomous mode should go here.
    *
-   * <p>Users should override this method for code which will be called each time the robot exits
+   * <p>
+   * Users should override this method for code which will be called each time the robot exits
    * autonomous mode.
    */
   public void autonomousExit() {}
@@ -227,7 +239,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Exit code for teleop mode should go here.
    *
-   * <p>Users should override this method for code which will be called each time the robot exits
+   * <p>
+   * Users should override this method for code which will be called each time the robot exits
    * teleop mode.
    */
   public void teleopExit() {}
@@ -235,8 +248,9 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Exit code for test mode should go here.
    *
-   * <p>Users should override this method for code which will be called each time the robot exits
-   * test mode.
+   * <p>
+   * Users should override this method for code which will be called each time the robot exits test
+   * mode.
    */
   public void testExit() {}
 
@@ -356,13 +370,13 @@ public abstract class IterativeRobotBase extends RobotBase {
 
     // Warn on loop time overruns
     // if (m_watchdog.isExpired()) {
-    //   m_watchdog.printEpochs();
+    // m_watchdog.printEpochs();
     // }
 
     // Warn on loop time overruns 4450
     if (m_watchDog_flush && m_watchdog.isExpired()) {
-        //m_watchdog.printEpochs();
-        m_watchdog.printEpochs(t -> Util.consoleLog("%s\r", t));
+      // m_watchdog.printEpochs();
+      m_watchdog.printEpochs(t -> Util.consoleLog("%s\r", t));
     }
   }
 
@@ -377,34 +391,31 @@ public abstract class IterativeRobotBase extends RobotBase {
   boolean m_watchDog_warning, m_watchDog_flush;
 
   /**
-   * 4450
-   * Turn watchdog warnings off or on.
+   * 4450 Turn watchdog warnings off or on.
+   * 
    * @param enabled True to enable, false to disable.
    */
-  public void enableWatchDogWarning(boolean enabled)
-  {
-      m_watchDog_warning = enabled;
+  public void enableWatchDogWarning(boolean enabled) {
+    m_watchDog_warning = enabled;
   }
 
   /**
-   * 4450
-   * Enable flush of watchdog warnings to our log file.
+   * 4450 Enable flush of watchdog warnings to our log file.
+   * 
    * @param enabled
    */
-  public void enableWatchDogFlush(boolean enabled)
-  {
-      m_watchDog_flush = enabled;
+  public void enableWatchDogFlush(boolean enabled) {
+    m_watchDog_flush = enabled;
   }
 
   /**
-   * 4450
-   * Set the timeout for the watchdog warning.
+   * 4450 Set the timeout for the watchdog warning.
+   * 
    * @param timeout Timeout in seconds.
    */
-  public void setWatchDogTimeout(double timeout)
-  {
-      m_watchdog.setTimeout(timeout);
-      m_period = timeout;
+  public void setWatchDogTimeout(double timeout) {
+    m_watchdog.setTimeout(timeout);
+    m_period = timeout;
   }
-  
+
 }

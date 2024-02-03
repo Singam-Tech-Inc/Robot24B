@@ -25,61 +25,66 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class PhotonVision extends SubsystemBase
-{
-    private PhotonCamera            camera = new PhotonCamera("4450-LL");
-    private PhotonPipelineResult    latestResult;
-    private VisionLEDMode           ledMode = VisionLEDMode.kOff;
+public class PhotonVision extends SubsystemBase {
+    private PhotonCamera camera = new PhotonCamera("4450-LL");
+    private PhotonPipelineResult latestResult;
+    private VisionLEDMode ledMode = VisionLEDMode.kOff;
 
-    private Field2d                 field = new Field2d();
+    private Field2d field = new Field2d();
 
     // adams code ==========
-    private final AprilTagFields    fields = AprilTagFields.k2024Crescendo;
-    private AprilTagFieldLayout     fieldLayout;
-    private PhotonPoseEstimator     poseEstimator;
+    private final AprilTagFields fields = AprilTagFields.k2024Crescendo;
+    private AprilTagFieldLayout fieldLayout;
+    private PhotonPoseEstimator poseEstimator;
 
     // end adams code=============
 
-	public PhotonVision() 
-	{
+    public PhotonVision() {
         fieldLayout = fields.loadAprilTagLayoutField();
 
         // setup the AprilTag pose etimator
-        
-        poseEstimator = new PhotonPoseEstimator(
-            fieldLayout,
-            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, // strategy to use for tag to pose calculation
-            camera, // the PhotonCamera
-            new Transform3d() // a series of transformations from Camera pos. to robot pos. (where camera is on robot)
-        );
+
+        poseEstimator =
+                new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, // strategy
+                                                                                                // to
+                                                                                                // use
+                                                                                                // for
+                                                                                                // tag
+                                                                                                // to
+                                                                                                // pose
+                                                                                                // calculation
+                        camera, // the PhotonCamera
+                        new Transform3d() // a series of transformations from Camera pos. to robot
+                                          // pos. (where camera is on robot)
+                );
 
         setLedMode(ledMode);
 
-		Util.consoleLog("PhotonVision created!");
+        Util.consoleLog("PhotonVision created!");
 
         // This sim field2d shows vision estimate of robot position.
 
         SmartDashboard.putData(field);
-	}
+    }
 
     /**
      * Get the lastest target results object returned by the camera.
+     * 
      * @return Results object.
      */
-    public PhotonPipelineResult getLatestResult()
-    {
+    public PhotonPipelineResult getLatestResult() {
         latestResult = camera.getLatestResult();
 
         return latestResult;
     }
 
     /**
-     * Indicates if lastest camera results list contains targets. Must 
-     * call getLatestResult() before calling.
+     * Indicates if lastest camera results list contains targets. Must call getLatestResult() before
+     * calling.
+     * 
      * @return True if targets available, false if not.
      */
-    public boolean hasTargets()
-    {
+    public boolean hasTargets() {
         getLatestResult();
 
         return latestResult.hasTargets();
@@ -87,25 +92,25 @@ public class PhotonVision extends SubsystemBase
 
     /**
      * Returns the target with the given Fiducial ID
+     * 
      * @param id the desired Fiducial ID
      * @return the target or null if the ID is not currently being tracked
      */
-    public PhotonTrackedTarget getTarget(int id)
-    {
+    public PhotonTrackedTarget getTarget(int id) {
         if (hasTargets()) {
             List<PhotonTrackedTarget> targets = latestResult.getTargets();
 
             for (int i = 0; i < targets.size(); i++) {
                 PhotonTrackedTarget target = targets.get(i);
-                if (target.getFiducialId() == id) return target;
+                if (target.getFiducialId() == id)
+                    return target;
             }
 
             return null;
-        }
-        else
+        } else
             return null;
     }
-    
+
     /**
      * Get an array of the currently tracked Fiducial IDs
      * 
@@ -117,7 +122,7 @@ public class PhotonVision extends SubsystemBase
         if (hasTargets()) {
             List<PhotonTrackedTarget> targets = latestResult.getTargets();
 
-            for (int i=0;i<targets.size();i++) {
+            for (int i = 0; i < targets.size(); i++) {
                 ids.add(targets.get(i).getFiducialId());
             }
         }
@@ -126,8 +131,7 @@ public class PhotonVision extends SubsystemBase
     }
 
     /**
-     * Checks whether or not the camera currently sees a target
-     * with the given Fiducial ID
+     * Checks whether or not the camera currently sees a target with the given Fiducial ID
      * 
      * @param id the Fiducial ID
      * @return whether the camera sees the ID
@@ -139,14 +143,14 @@ public class PhotonVision extends SubsystemBase
     // Best Target Methods =============================================================
 
     /**
-     * Returns the yaw angle of the best target in the latest camera results
-     * list. Must call hasTargets() before calling this function.
-     * @return Best target yaw value from straight ahead or zero. -yaw means
-     * target is left of robot center.
+     * Returns the yaw angle of the best target in the latest camera results list. Must call
+     * hasTargets() before calling this function.
+     * 
+     * @return Best target yaw value from straight ahead or zero. -yaw means target is left of robot
+     *         center.
      */
-    public double getYaw()
-    {
-        if (hasTargets()) 
+    public double getYaw() {
+        if (hasTargets())
             return latestResult.getBestTarget().getYaw();
         else
             return 0;
@@ -154,39 +158,38 @@ public class PhotonVision extends SubsystemBase
 
 
     /**
-     * Returns the Fiducial ID of the current best target, you should call
-     * hasTargets() first!
+     * Returns the Fiducial ID of the current best target, you should call hasTargets() first!
+     * 
      * @return the ID or -1 if no targets
      */
-    public int getFiducialID()
-    {
-        if (hasTargets()) 
+    public int getFiducialID() {
+        if (hasTargets())
             return latestResult.getBestTarget().getFiducialId();
         else
             return -1;
     }
 
     /**
-     * Returns the area of the best target in the latest camera results
-     * list. Must call hasTargets() before calling this function.
+     * Returns the area of the best target in the latest camera results list. Must call hasTargets()
+     * before calling this function.
+     * 
      * @return Best target area value.
      */
-    public double getArea()
-    {
-        if (hasTargets()) 
+    public double getArea() {
+        if (hasTargets())
             return latestResult.getBestTarget().getArea();
         else
             return 0;
     }
- 
+
     // Utility Methods =============================================================
 
     /**
      * Select camera's image processing pipeline.
+     * 
      * @param index Zero based number of desired pipeline.
      */
-    public void selectPipeline(int index)
-    {
+    public void selectPipeline(int index) {
         Util.consoleLog("%d", index);
 
         camera.setPipelineIndex(index);
@@ -194,10 +197,10 @@ public class PhotonVision extends SubsystemBase
 
     /**
      * Set the LED mode.
+     * 
      * @param mode Desired LED mode.
      */
-    public void setLedMode(VisionLEDMode mode)
-    {
+    public void setLedMode(VisionLEDMode mode) {
         Util.consoleLog("%d", mode.value);
 
         camera.setLED(mode);
@@ -208,21 +211,19 @@ public class PhotonVision extends SubsystemBase
     /**
      * Toggle LED mode on/off.
      */
-    public void toggleLedMode()
-    {
+    public void toggleLedMode() {
         if (ledMode == VisionLEDMode.kOff)
             ledMode = VisionLEDMode.kOn;
         else
             ledMode = VisionLEDMode.kOff;
-        
+
         setLedMode(ledMode);
     }
 
     /**
      * Save pre-processed image from camera stream.
      */
-    public void inputSnapshot()
-    {
+    public void inputSnapshot() {
         Util.consoleLog();
 
         camera.takeInputSnapshot();
@@ -231,28 +232,25 @@ public class PhotonVision extends SubsystemBase
     /**
      * Save post-processed image from camera stream.
      */
-    public void outputSnapshot()
-    {
+    public void outputSnapshot() {
         Util.consoleLog();
 
         camera.takeOutputSnapshot();
     }
-        
+
     @Override
-	public void initSendable( SendableBuilder builder )
-	{
-        //super.initSendable(builder);
+    public void initSendable(SendableBuilder builder) {
+        // super.initSendable(builder);
         builder.setSmartDashboardType("Subsystem");
 
         builder.addBooleanProperty("has Targets", () -> hasTargets(), null);
         builder.addDoubleProperty("target yaw", () -> getYaw(), null);
         builder.addDoubleProperty("target area", () -> getArea(), null);
-	}
-    
+    }
+
     /**
-     * returns an Optional value of the robot's estimated 
-     * field-centric pose given current tags that it sees.
-     * (and also the timestamp)
+     * returns an Optional value of the robot's estimated field-centric pose given current tags that
+     * it sees. (and also the timestamp)
      * 
      * @return the Optional estimated pose (empty optional means no pose or uncertain/bad pose)
      */
@@ -264,9 +262,11 @@ public class PhotonVision extends SubsystemBase
             Pose3d pose = estimatedPose.estimatedPose;
 
             // pose2d to pose3d (ignore the Z axis which is height off ground)
-            Pose2d pose2d = new Pose2d(pose.getX(), pose.getY(), new Rotation2d(pose.getRotation().getAngle()));
+            Pose2d pose2d = new Pose2d(pose.getX(), pose.getY(),
+                    new Rotation2d(pose.getRotation().getAngle()));
 
-            // update the field2d object in NetworkTables to visualize where the camera thinks it's at
+            // update the field2d object in NetworkTables to visualize where the camera thinks it's
+            // at
             field.setRobotPose(pose2d);
 
             // logic for checking if pose is valid would go here:
@@ -279,6 +279,7 @@ public class PhotonVision extends SubsystemBase
             }
 
             return Optional.of(estimatedPose);
-        } else return Optional.empty();
+        } else
+            return Optional.empty();
     }
 }

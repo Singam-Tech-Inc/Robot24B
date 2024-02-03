@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 /**
  * AprilTag IDs for the Crescendo 2024 season.
  * 
- * Note that the BLUE/RED designations refer to which alliance
- * the tag "belongs" to rather than its physical location.
+ * Note that the BLUE/RED designations refer to which alliance the tag "belongs" to rather than its
+ * physical location.
  */
 public class AprilTagNames {
     public final int SOURCE_RIGHT;

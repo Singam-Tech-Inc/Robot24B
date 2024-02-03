@@ -15,55 +15,55 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static). Do not put anything functional in this class.
+ * constants. This class should not be used for any other purpose. All constants should be declared
+ * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants
-{
-	public static String		PROGRAM_NAME = "RAC24-MS2-01.30.24-1";
+public final class Constants {
+    public static String PROGRAM_NAME = "RAC24-MS2-01.30.24-1";
 
-	public static Robot			robot;
+    public static Robot robot;
 
-	public static Properties	robotProperties;
-	  
-	public static boolean		isClone = false, isComp = false, tracing = false;
-	    	
-	public static DriverStation.Alliance	 alliance;
-	public static int                        location, matchNumber;
-	public static String					 eventName, gameMessage;
-	    
-	// Non-drive base motor controller port assignments
+    public static Properties robotProperties;
 
-    public static final int     SHOOTER_MOTOR_1 = 9;
-    public static final int     SHOOTER_MOTOR_2 = 10;
+    public static boolean isClone = false, isComp = false, tracing = false;
 
-    public static final int     REV_PDB = 0;
-	
-	// GamePad port assignments.
-	public static final int		DRIVER_PAD = 0, UTILITY_PAD = 1;
-    public static final double  DRIVE_DEADBAND = 0.05, ROTATION_DEADBAND = .05;
+    public static DriverStation.Alliance alliance;
+    public static int location, matchNumber;
+    public static String eventName, gameMessage;
 
-	// Pneumatic valve controller port assignments.
-	//public static final int		COMPRESSOR = 0;
+    // Non-drive base motor controller port assignments
 
-	// Digital Input port assignments. Encoder takes 2 ports.
-	  
-	// Analog Input port assignments.
-	
-	// LCD display line number constants showing class where the line is set.
-	public static final int		LCD_1 = 1;	    // Robot, Auto Commands.
-	public static final int		LCD_2 = 2;	    // Swerve Drive command.
-	public static final int		LCD_3 = 3;	    // ShuffleBoard subsystem.
-	public static final int		LCD_4 = 4;	    // ShuffleBoard subsystem.
-	public static final int		LCD_5 = 5;	    // Autonomous commands.
-	public static final int		LCD_6 = 6;	    // ShuffleBoard subsystem.
-	public static final int		LCD_7 = 7;	    // ShuffleBoard subsystem.
-	public static final int		LCD_8 = 8;	    // ShuffleBoard subsystem.
-	public static final int		LCD_9 = 9;	    // ShuffleBoard subsystem.
-	public static final int		LCD_10 = 10;	// ShuffleBoard subsystem.
+    public static final int SHOOTER_MOTOR_1 = 9;
+    public static final int SHOOTER_MOTOR_2 = 10;
+
+    public static final int REV_PDB = 0;
+
+    // GamePad port assignments.
+    public static final int DRIVER_PAD = 0, UTILITY_PAD = 1;
+    public static final double DRIVE_DEADBAND = 0.05, ROTATION_DEADBAND = .05;
+
+    // Pneumatic valve controller port assignments.
+    // public static final int COMPRESSOR = 0;
+
+    // Digital Input port assignments. Encoder takes 2 ports.
+
+    // Analog Input port assignments.
+
+    // LCD display line number constants showing class where the line is set.
+    public static final int LCD_1 = 1; // Robot, Auto Commands.
+    public static final int LCD_2 = 2; // Swerve Drive command.
+    public static final int LCD_3 = 3; // ShuffleBoard subsystem.
+    public static final int LCD_4 = 4; // ShuffleBoard subsystem.
+    public static final int LCD_5 = 5; // Autonomous commands.
+    public static final int LCD_6 = 6; // ShuffleBoard subsystem.
+    public static final int LCD_7 = 7; // ShuffleBoard subsystem.
+    public static final int LCD_8 = 8; // ShuffleBoard subsystem.
+    public static final int LCD_9 = 9; // ShuffleBoard subsystem.
+    public static final int LCD_10 = 10; // ShuffleBoard subsystem.
 
     public static final class DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -87,11 +87,11 @@ public final class Constants
         // Drive base radius in meters. Distance from robot center to furthest module.
         public static final double kDriveBaseRadius = .54;
 
-        public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+        public static final SwerveDriveKinematics kDriveKinematics =
+                new SwerveDriveKinematics(new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+                        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+                        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+                        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
         // Angular offsets of the modules relative to the chassis in radians at
         // alignment/start up.
@@ -116,12 +116,14 @@ public final class Constants
         public static final boolean kGyroReversed = false;
 
         // Default starting field position in meters for pose tracking. 2024 field.
-        public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(1.660, 7.101, Rotation2d.fromDegrees(0));
+        public static final Pose2d DEFAULT_STARTING_POSE =
+                new Pose2d(1.660, 7.101, Rotation2d.fromDegrees(0));
     }
 
     public static final class ModuleConstants {
         // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
-        // This changes the drive speed of the module (a pinion gear with more teeth will result in a
+        // This changes the drive speed of the module (a pinion gear with more teeth will result in
+        // a
         // robot that drives faster).
         public static final int kDrivingMotorPinionTeeth = 14;
 
@@ -134,22 +136,28 @@ public final class Constants
         public static final double kWheelDiameterMeters = 0.0762;
         public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
 
-        // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
-        public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
-        public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
-            / kDrivingMotorReduction;
+        // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on
+        // the bevel pinion
+        public static final double kDrivingMotorReduction =
+                (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
+        public static final double kDriveWheelFreeSpeedRps =
+                (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
-        public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
-            / kDrivingMotorReduction; // meters
+        public static final double kDrivingEncoderPositionFactor =
+                (kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction; // meters
 
-        public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
-            / kDrivingMotorReduction) / 60.0; // meters per second
+        public static final double kDrivingEncoderVelocityFactor =
+                ((kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction) / 60.0; // meters per
+                                                                                    // second
 
         public static final double kTurningEncoderPositionFactor = (2 * Math.PI); // radians
-        public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+        public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians
+                                                                                         // per
+                                                                                         // second
 
         public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
-        public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
+        public static final double kTurningEncoderPositionPIDMaxInput =
+                kTurningEncoderPositionFactor; // radians
 
         public static final double kDrivingP = 0.04;
         public static final double kDrivingI = 0;
@@ -183,16 +191,18 @@ public final class Constants
         public static final double kPThetaController = 1;
 
         public static final double kHolonomicPathFollowerP = 5.0;
-        
+
         // Constraint for the motion profiled robot angle controller
-        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-            kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+                new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
+                        kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
     public static final class NeoMotorConstants {
         public static final double kFreeSpeedRpm = 5676;
     }
 
-  //-------------------- No student code above this line ------------------------------------------------------
+    // -------------------- No student code above this line
+    // ------------------------------------------------------
 
 }

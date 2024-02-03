@@ -10,12 +10,14 @@ import Team4450.Robot24.subsystems.PhotonVision;
 
 public class DriveToNote extends Command {
     PIDController rotationController = new PIDController(0.01, 0, 0); // for rotating drivebase
-    PIDController translationController = new PIDController(0.1, 0, 0); // for moving drivebase in X,Y plane
+    PIDController translationController = new PIDController(0.1, 0, 0); // for moving drivebase in
+                                                                        // X,Y plane
     DriveBase robotDrive;
     PhotonVision photonVision;
 
     /**
      * Track to a note using getArea() and getYaw()
+     * 
      * @param robotDrive the robot drive base
      * @param photonVision the photonvision subsystem
      */
@@ -41,7 +43,8 @@ public class DriveToNote extends Command {
 
     @Override
     public void execute() {
-        if (!photonVision.hasTargets()) return;
+        if (!photonVision.hasTargets())
+            return;
         // make sure target centered before we move
         if (!rotationController.atSetpoint()) {
             double rotation = rotationController.calculate(photonVision.getYaw());
